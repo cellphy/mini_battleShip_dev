@@ -1,5 +1,4 @@
 const rs = require("readline-sync");
-
 let board = [];
 let ships = [
   { size: 2, hits: 0 },
@@ -33,7 +32,6 @@ function placeShips() {
     while (!placed) {
       let direction = Math.floor(Math.random() * 2);
       let x, y;
-
       if (direction === 0) {
         x = Math.floor(Math.random() * (board.length - ship.size));
         y = Math.floor(Math.random() * board.length);
@@ -41,7 +39,6 @@ function placeShips() {
         x = Math.floor(Math.random() * board.length);
         y = Math.floor(Math.random() * (board.length - ship.size));
       }
-
       if (canPlaceShip(x, y, ship.size, direction)) {
         for (let i = 0; i < ship.size; i++) {
           if (direction === 0) {
@@ -73,8 +70,18 @@ function restartGame() {
   const playAgain = rs.question(
     "You have destroyed all battleships. Would you like to play again? Y/N "
   );
-
   if (playAgain.toUpperCase() === "Y") {
+    board = [];
+    ships = [
+      { size: 2, hits: 0 },
+      { size: 3, hits: 0 },
+      { size: 3, hits: 0 },
+      { size: 4, hits: 0 },
+      { size: 5, hits: 0 },
+    ];
+    guessedLocations = [];
+    initializeBoard(10);
+    placeShips();
     playGame();
   } else {
     console.log("Thanks for playing!");
@@ -101,7 +108,6 @@ const doSomething = () => {
     let guess = getGuess();
     let x = guess.charCodeAt(0) - 65;
     let y = parseInt(guess.slice(1)) - 1;
-
     if (guessedLocations.includes(guess)) {
       console.log("You have already picked this location. Miss!");
     } else if (
@@ -144,6 +150,7 @@ function playGame() {
   doSomething();
   restartGame();
 }
+
 initializeBoard(10);
 placeShips();
 playGame();
